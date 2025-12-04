@@ -1,0 +1,13 @@
+[project]
+name = "ruddhi-portfolio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.1.2",
+    "gunicorn>=23.0.0",
+    "numpy>=2.3.5",
+    "scikit-learn>=1.7.2",
+    "sentence-transformers>=5.1.2",
+]
