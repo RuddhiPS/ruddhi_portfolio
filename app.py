@@ -1,210 +1,198 @@
-from flask import Flask, render_template
-from flask import Flask, render_template, request, jsonify
-from digital_twin_embeder import answer_query
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
+import requests
 
-app = Flask(__name__)
+# from digital_twin_embeder import answer_query
 
+# --------------------
+# App initialization
+# --------------------
+HF_CHAT_URL = "https://RPS11111-digital-twin-inference.hf.space/chat"
 
-@app.route("/")
-def home():
-    # Career objective: AI/ML first, then software dev
+app = FastAPI()
+
+templates = Jinja2Templates(directory="templates")
+
+# --------------------
+# Home page (HTML)
+# --------------------
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
     career_objective = (
-        "To build reliable, explainable AI and machine learning systems that solve real-world problems, "
-        "and to complement them with robust software engineering so they can be deployed, used, and improved in practice."
+        "Focused on building production-ready systems by combining my skills in "
+        "Machine Learning, Artificial Intelligence, Software Development, and "
+        "Product Management, with a strong execution mindset and a focus on real user needs."
     )
 
-    # Projects (you can edit or add more later)
     projects = [
         {
-            "name": "Brick Kiln Detection and Temporal Change Analysis",
+            "name": "Portfolio Website with Embedded AI Assitant Bot",
+            "category": "AI / Application Development",
+            "description": (
+                "Built a personal portfolio website with an embedded AI-powered Chat Bot "
+                "capable of answering professional, project, and career-related questions."
+            ),
+            "tech_stack": [
+                "Flask",
+                "HuggingFace",
+                "Sentence Transformers",
+                "LLMs",
+                "HTML",
+                "CSS",
+            ],
+            "specialities": [
+                "AI ChatBot Integrated",
+                "Semantic search over personal knowledge base",
+                "End-to-end deployment and UI integration",
+            ],
+            "link": "#",
+        },
+        {
+            "name": "Domain-Specific Question Answering Chatbot",
+            "category": "Agentic AI / Expert Systems",
+            "description": (
+                "Developed an AI-powered question answering system for domain-specific queries, "
+                "designed to ensure reliability in critical use cases."
+            ),
+            "tech_stack": [
+                "LLMs",
+                "HuggingFace",
+                "Sentence Transformers",
+                "Streamlit",
+                "Gmail API",
+            ],
+            "specialities": [
+                "Knowledge base-driven question answering",
+                "Tool-enabled agent capable of triggering email notifications",
+                "Hallucination-aware design with fallback to human-in-the-loop",
+                "Human-in-the-loop AI system design",
+                "Interactive Streamlit demo prototyping",
+            ],
+            "link": "#",
+        },
+        {
+            "name": "Object Identification and Time-Series Change Analysis",
             "category": "AI / Computer Vision",
-            "description": "Designed a YOLO-based detection and temporal change detection pipeline over multi-year satellite imagery to monitor brick kilns.",
-            "tech_stack": ["Python", "PyTorch", "YOLOv8", "LSTM / ConvLSTM"],
+            "description": (
+                "Designed a YOLO-based detection and temporal change detection pipeline "
+                "over multi-year satellite imagery to monitor brick kilns."
+            ),
+            "tech_stack": ["YOLO", "LSTM / ConvLSTM", "VisionTransformer", "OpenCV"],
             "specialities": [
                 "End-to-end ML pipeline design",
-                "Temporal modeling for change detection",
+                "Improved pipeline accuracy from 85% to 91%",
+                "Built a hand-validation application",
                 "Evaluation and performance tuning",
             ],
             "link": "#",
         },
-        {
-            "name": "Human Activity Recognition (UCI HAR)",
-            "category": "Machine Learning",
-            "description": "Classified human activities using smartphone sensor data with feature engineering and dimensionality reduction.",
-            "tech_stack": ["Python", "Pandas", "Scikit-Learn", "PCA"],
-            "specialities": [
-                "Signal preprocessing and EDA",
-                "Feature engineering and PCA",
-                "Multi-class model training and evaluation",
-            ],
-            "link": "#",
-        },
-        {
-            "name": "Document Extractor and Classifier",
-            "category": "NLP / Automation",
-            "description": "Built a pipeline to extract text from PDFs and classify them using classical ML and transformer-based approaches.",
-            "tech_stack": ["Python", "BERT", "Scikit-Learn"],
-            "specialities": [
-                "Document preprocessing and structure detection",
-                "Transformer-based text classification",
-                "Automation of report generation",
-            ],
-            "link": "#",
-        },
-        {
-            "name": "Next-Token Text Generator",
-            "category": "Generative AI",
-            "description": "Implemented a mini language model to generate the next token in a sequence and deployed it as an interactive demo.",
-            "tech_stack": ["Python", "Deep Learning"],
-            "specialities": [
-                "Sequence modeling fundamentals",
-                "Training and evaluating language models",
-                "Building a simple interactive interface",
-            ],
-            "link": "#",
-        },
-        {
-            "name": "POS Inventory Management System",
-            "category": "Software Development",
-            "description": "Developed a Java-based POS system with MySQL backend for inventory and billing.",
-            "tech_stack": ["Java", "JDBC", "MySQL", "Swing"],
-            "specialities": [
-                "Desktop UI in Java",
-                "Relational database design",
-                "CRUD-based business logic",
-            ],
-            "link": "#",
-        },
-        {
-            "name": "Course and Attendance Management Tools",
-            "category": "Software Development",
-            "description": "Built Java desktop tools for course management and timetable-based attendance tracking.",
-            "tech_stack": ["Java", "JDBC", "MySQL", "Swing"],
-            "specialities": [
-                "Form-based desktop UIs",
-                "DB integration and validation",
-                "Time-table aware attendance logic",
-            ],
-            "link": "#",
-        },
     ]
 
-    # Techstack: tools / technologies
     techstack = {
-        "Programming Languages": ["Python", "Java", "C", "C++", "SQL", "JavaScript"],
-        "Web and Backend": ["HTML", "CSS", "Flask", "JSP", "Java Spring", "JDBC"],
-        "Data and ML Libraries": [
-            "NumPy",
-            "Pandas",
-            "Scikit-Learn",
+        "Programming and Scripting Languages": ["Python", "Java", "C", "HTML", "CSS", "SQL"],
+        "Frameworks and Libraries": [
             "TensorFlow",
             "PyTorch",
-            "Matplotlib",
-            "Ultralytics YOLO",
+            "Scikit-learn",
+            "Flask",
+            "Ultralytics",
         ],
-        "Databases and Tools": ["MySQL", "Git", "GitHub", "GroqCloud", "OpenAI SDK"],
+        "NLP and LLM": [
+            "LLM Training",
+            "Fine-tuning",
+            "Prompt Engineering",
+            "Hugging Face",
+        ],
+        "Agentic AI": [
+            "OpenAI Agents SDK",
+            "LangChain",
+            "LangGraph",
+            "Microsoft AutoGen",
+            "n8n",
+        ],
+        "Computer Vision": [
+            "Ultralytics YOLO",
+            "Vision Transformer (ViT)",
+        ],
+        "Developer Tools": ["Git", "GitHub", "Docker", "DVC"],
     }
 
-    # Skills: what you can do
-    skills = [
-        "Artificial Intelligence and Machine Learning (end-to-end pipelines)",
-        "Deep Learning for vision and text",
-        "Computer Vision: detection, super-resolution, reconstruction",
-        "Natural Language Processing and document understanding",
-        "Agentic AI: AI agents, tool use, and workflows",
-        "Desktop software development using Java (Swing, JDBC, MySQL)",
-        "Integrating IoT devices (sensors, microcontrollers) with custom software",
-        "Product thinking: problem framing, roadmapping, and experimentation",
-    ]
-
-    # Work experience
     experience = [
         {
-            "role": "Summer Research Intern",
-            "org": "IIT Gandhinagar",
+            "role": "Summer Internship (AIML - Computer Vision)",
+            "org": "Sustainability Lab",
             "period": "May 2025 – July 2025",
-            "location": "Gandhinagar, India",
+            "location": "IIT Gandhinagar, India",
             "highlights": [
-                "Worked on computer vision models (YOLO, ConvLSTM, Vision Transformers) for monitoring brick kilns.",
-                "Designed a change-detection pipeline across multi-year satellite imagery.",
-                "Built a hand-validation and ground-truth generation tool to speed up labeling.",
+                "Object Detection and Classification (YOLO, ConvLSTM, ViT)",
+                "Time-series change detection on satellite imagery",
+                "Built hand-validation and ground-truth tooling",
             ],
         }
     ]
 
-    # Education timeline (you will later add per-sem details into these dicts)
     education = [
         {
-            "label": "10th Standard",
-            "institution": "St. Kabir School, Ahmedabad",
-            "year": "2020",
-            "details": "GSEB Board",
-        },
-        {
-            "label": "12th Standard (PCM)",
-            "institution": "Divyapath Higher Secondary School, Ahmedabad",
-            "year": "2022",
-            "details": "GSHSEB Board",
-        },
-        {
-            "label": "B.E. Computer Engineering (AI & ML Honors)",
+            "label": "B.E. Computer Engineering (AI & ML Honours)",
             "institution": "L.D. College of Engineering, GTU",
             "year": "2022 – 2026",
-            "details": "You can add semester-wise CPI here later.",
+            "details": "9.63/10 CPI",
         },
         {
             "label": "Visiting Student",
             "institution": "IIT Gandhinagar",
             "year": "Aug 2025 – Nov 2025",
-            "details": "Focused on ML and AI research projects.",
-        },
-        {
-            "label": "BSc in Data Science and Applications",
-            "institution": "IIT Madras (Online)",
-            "year": "Ongoing",
-            "details": "Data science, statistics, and applications.",
+            "details": "10/10 CPI",
         },
     ]
 
-    # Contact info
     contact = {
         "email": "rpshah51174@gmail.com",
         "github": "https://github.com/RuddhiPS",
-        "linkedin": "https://www.linkedin.com/in/ruddhips",
+        "linkedin": "http://www.linkedin.com/in/ruddhi-shah-05060433b",
         "location": "Ahmedabad, India",
     }
 
-    return render_template(
+    return templates.TemplateResponse(
         "index.html",
-        career_objective=career_objective,
-        projects=projects,
-        techstack=techstack,
-        skills=skills,
-        experience=experience,
-        education=education,
-        contact=contact,
+        {
+            "request": request,
+            "career_objective": career_objective,
+            "projects": projects,
+            "techstack": techstack,
+            "experience": experience,
+            "education": education,
+            "contact": contact,
+        },
     )
 
+# --------------------
+# API: Digital Twin
+# --------------------
+class AskTwinRequest(BaseModel):
+    question: str | None = None
+    message: str | None = None
+
+
 @app.post("/api/ask-twin")
-def api_ask_twin():
-    """
-    API endpoint for the Digital Twin chat.
-    Expects JSON: { "question": "..." }
-    Returns JSON: { "answer": "..." }
-    """
-    data = request.get_json(silent=True) or {}
-    question = (data.get("question") or data.get("message") or "").strip()
+def api_ask_twin(payload: AskTwinRequest):
+    question = (payload.question or payload.message or "").strip()
 
     if not question:
-        return jsonify({"error": "Empty question"}), 400
+        raise HTTPException(status_code=400, detail="Empty question")
 
     try:
-        answer = answer_query(question)
-        return jsonify({"answer": answer})
-    except Exception as e:
-        app.logger.exception("Digital Twin error")
-        return jsonify({"error": "Internal error"}), 500
+        r = requests.post(
+            HF_CHAT_URL,
+            json={"message": question},
+            timeout=20,
+        )
+        r.raise_for_status()
 
+        data = r.json()
+        return {"answer": data.get("reply", "")}
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=502, detail="Digital Twin service unavailable")

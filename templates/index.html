@@ -22,20 +22,20 @@
             <div class="chat-window-header">
               <div class="chat-window-header-left">
                 <div class="chat-avatar">
-                  DT
+                  RS
                 </div>
                 <div>
-                  <div class="chat-window-title">Digital Twin of Ruddhi</div>
+                  <div class="chat-window-title">Portfolio Assistant</div>
                   <div class="chat-window-status">
-                    Online · Ask me about her career, projects, and experience
+                    Online · Ask me about Ruddhi's career, projects, and experience
                   </div>
                 </div>
               </div>
-              <div class="chat-window-header-right">
+              <!-- <div class="chat-window-header-right">
                 <span class="chat-header-dot"></span>
                 <span class="chat-header-dot"></span>
                 <span class="chat-header-dot"></span>
-              </div>
+              </div> -->
             </div>
 
             <!-- Messages area -->
@@ -43,13 +43,13 @@
               <!-- Initial twin message -->
               <div class="chat-bubble chat-bubble-twin">
                 <p class="mb-1">
-                  Hi.. I am Ruddhi's Digital Twin. I am here to help you, feel
-                  free to drop me questions about her professional career and
+                  Hi.. I am here to help you, feel
+                  free to drop me questions about Ruddhi's professional career and
                   experience.
                 </p>
                 <p class="fun-warning mb-0">
-                  Fun warning: if you ask something different.. Ruddhi will get
-                  notified.. so beware.
+                  <!-- Fun warning: if you ask something different.. Ruddhi will get
+                  notified.. so beware. -->
                 </p>
               </div>
             </div>
@@ -60,7 +60,7 @@
                 type="text"
                 id="chat-input"
                 class="form-control chat-input"
-                placeholder="Type a message about Ruddhi's projects, skills, or experience..."
+                placeholder="Type your question"
                 autocomplete="off"
                 required
               />
@@ -72,7 +72,7 @@
 
 
             <div class="chat-footer-note">
-              (This is a preview of the Digital Twin chat. A smarter model is under training.)
+              <!-- (This is a preview of the Digital Twin chat. A smarter model is under training.) -->
             </div>
           </div>
 
@@ -128,99 +128,37 @@
   </div>
 </section>
 
-<!-- Projects -->
-<section id="projects" class="section-padding">
-  <div class="container">
-    <h2 class="section-title text-center mb-3">Projects</h2>
-    <p class="section-subtitle text-center mb-4">
-      A selection of AI/ML and software projects I have built and deployed.
-    </p>
-
-    <div class="row">
-      {% for project in projects %}
-      <div class="col-md-6 col-lg-4 mb-4">
-        <div class="project-card">
-          <div class="project-card-body">
-            <span class="project-category">{{ project.category }}</span>
-            <h5 class="project-title">{{ project.name }}</h5>
-            <p class="project-description">
-              {{ project.description }}
-            </p>
-
-            {% if project.tech_stack %}
-            <div class="project-techstack mb-2">
-              {% for tech in project.tech_stack %}
-              <span class="badge project-tech-badge">{{ tech }}</span>
-              {% endfor %}
-            </div>
-            {% endif %}
-
-            {% if project.specialities %}
-            <ul class="project-specialities">
-              {% for sp in project.specialities %}
-              <li>{{ sp }}</li>
-              {% endfor %}
-            </ul>
-            {% endif %}
-
-            {% if project.link and project.link != "#" %}
-            <a
-              href="{{ project.link }}"
-              target="_blank"
-              class="btn btn-sm btn-outline-primary mt-2"
-            >
-              View project
-            </a>
-            {% else %}
-            <div class="text-muted small mt-2">
-              Links coming soon.
-            </div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<!-- Techstack and Skills -->
+<!-- Techstack -->
 <section id="techstack" class="section-padding section-alt-bg">
   <div class="container">
-    <div class="row gy-4">
-      <div class="col-lg-6">
-        <h2 class="section-title">Techstack</h2>
-        <p class="section-subtle">
-          Ready to work with whichever stack is most beneficial for the
-          project. So far, I have worked with:
+    <div class="row gy-4 justify-content-center">
+
+      <div class="col-lg-10">
+        <h2 class="section-title text-center mb-3">Tech Stack</h2>
+        <p class="section-subtitle text-center mb-4">
+          Production-ready experience across AI, Machine Learning, Agentic systems,
+          and full-stack development.
         </p>
 
-        {% for category, items in techstack.items() %}
-        <div class="tech-group mb-3">
-          <h5 class="tech-group-title">{{ category }}</h5>
-          <div class="tech-badges">
-            {% for item in items %}
-            <span class="badge tech-badge">{{ item }}</span>
-            {% endfor %}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
+        <div class="row gy-4">
 
-      <div id="skills" class="col-lg-6">
-        <h2 class="section-title">Skills</h2>
-        <p class="section-subtle">
-          These are the kinds of problems I enjoy working on and the ways I can
-          contribute.
-        </p>
-        <div class="skills-list">
-          {% for skill in skills %}
-          <div class="skill-pill">
-            {{ skill }}
+          {% for category, items in techstack.items() %}
+          <div class="col-md-6">
+            <div class="tech-group">
+              <h5 class="tech-group-title">{{ category }}</h5>
+
+              <div class="tech-badges">
+                {% for item in items %}
+                <span class="tech-badge">{{ item }}</span>
+                {% endfor %}
+              </div>
+            </div>
           </div>
           {% endfor %}
+
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -256,6 +194,211 @@
     </div>
   </div>
 </section>
+
+<!-- Projects -->
+<section id="projects" class="section-padding hero-gradient">
+  <div class="container">
+    <h2 class="section-title text-center mb-3">Projects</h2>
+    <p class="section-subtitle text-center mb-4">
+      A selection of AI/ML and software projects I have worked on.
+    </p>
+
+    <div class="row">
+      {% for project in projects %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="project-card h-100">
+          <div class="achievement-card-body">
+
+            <span class="achievement-badge">{{ project.category }}</span>
+            <h5 class="project-title">{{ project.name }}</h5>
+
+            {% if project.tech_stack %}
+            <div class="project-techstack mb-3">
+              {% for tech in project.tech_stack %}
+              <span class="badge project-tech-badge">{{ tech }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="d-flex gap-2 mt-auto">
+              <!-- Know More -->
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#projectModal{{ loop.index }}"
+              >
+                Know more
+              </button>
+
+              <!-- View Project -->
+              {% if project.link and project.link != "#" %}
+              <a
+                href="{{ project.link }}"
+                target="_blank"
+                class="btn btn-sm btn-outline-primary"
+              >
+                View project
+              </a>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="projectModal{{ loop.index }}"
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <div>
+                <span class="project-category">{{ project.category }}</span>
+                <h5 class="modal-title mt-1">{{ project.name }}</h5>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+
+            <div class="modal-body">
+              <p class="mb-3">
+                {{ project.description }}
+              </p>
+
+              {% if project.tech_stack %}
+              <h6 class="mb-2">Technologies</h6>
+              <div class="project-techstack mb-3">
+                {% for tech in project.tech_stack %}
+                <span class="badge project-tech-badge">{{ tech }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+
+              {% if project.specialities %}
+              <h6 class="mb-2">Highlights</h6>
+              <ul class="project-specialities">
+                {% for sp in project.specialities %}
+                <li>{{ sp }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+
+            <div class="modal-footer">
+              {% if project.link and project.link != "#" %}
+              <a
+                href="{{ project.link }}"
+                target="_blank"
+                class="btn btn-primary"
+              >
+                View project
+              </a>
+              {% endif %}
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- Achievements -->
+<section id="achievements" class="section-padding section-alt-bg">
+  <div class="container">
+    <h2 class="section-title text-center mb-3">Achievements</h2>
+    <p class="section-subtitle text-center mb-4">
+      Milestones that define my academic, professional, and sports journey.
+    </p>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- Achievement 1 -->
+      <div class="col-md-6 col-lg-4">
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7277737434665160704?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A7277737434665160704%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29&lipi=urn%3Ali%3Apage%3Ad_flagship3_leia_creator_analytics_content%3B2DtOLDsnQEaLtoOS6cLsIw%3D%3D"
+           target="_blank"
+           class="achievement-card">
+          <div class="achievement-card-body">
+            <div class="achievement-badge">Academic Excellence</div>
+            <h5 class="achievement-title">10/10 CGPA at IIT Gandhinagar</h5>
+            <p class="achievement-desc">
+              Achieved a perfect CGPA during my visiting student program at IIT Gandhinagar.
+            </p>
+           <p class="btn btn-sm btn-outline-primary">Click to view</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Achievement 2 -->
+      <div class="col-md-6 col-lg-4">
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7364323239507976193?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A7364323239507976193%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29&lipi=urn%3Ali%3Apage%3Ad_flagship3_leia_creator_analytics_content%3B2DtOLDsnQEaLtoOS6cLsIw%3D%3D"
+           target="_blank"
+           class="achievement-card">
+          <div class="achievement-card-body">
+            <div class="achievement-badge">Internship</div>
+            <h5 class="achievement-title">
+              Selected for Summer Internship (900+ applicants)
+            </h5>
+            <p class="achievement-desc">
+              Selected through a highly competitive process among 900+ candidates.
+            </p>
+           <p class="btn btn-sm btn-outline-primary">Click to view</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Achievement 3 -->
+      <div class="col-md-6 col-lg-4">
+        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7364323239507976193?updateEntityUrn=urn%3Ali%3Afs_updateV2%3A%28urn%3Ali%3Aactivity%3A7364323239507976193%2CFEED_DETAIL%2CEMPTY%2CDEFAULT%2Cfalse%29&lipi=urn%3Ali%3Apage%3Ad_flagship3_leia_creator_analytics_content%3B2DtOLDsnQEaLtoOS6cLsIw%3D%3D"
+           target="_blank"
+           class="achievement-card">
+          <div class="achievement-card-body">
+            <div class="achievement-badge">Award</div>
+            <h5 class="achievement-title">Dewang Mehta IT Award</h5>
+            <p class="achievement-desc">
+              Recipient of the prestigious Dewang Mehta IT Award for academic excellence.
+            </p>
+           <p class="btn btn-sm btn-outline-primary">Click to view</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Achievement 4 -->
+      <div class="col-md-6 col-lg-4">
+        <a href=""
+           target="_blank"
+           class="achievement-card">
+          <div class="achievement-card-body">
+            <div class="achievement-badge">Sports</div>
+            <h5 class="achievement-title">Kho-Kho Runners Up</h5>
+            <p class="achievement-desc">
+              Represented my institution and secured runner-up position in Kho-Kho.
+            </p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 
 <!-- Education Timeline -->
 <section id="education" class="section-padding section-alt-bg">
@@ -312,12 +455,9 @@
   <div class="container">
     <h2 class="section-title text-center mb-3">Thank you</h2>
     <p class="section-subtitle text-center mb-4">
-      Thanks for visiting my portfolio. If you would like to collaborate, discuss
-      an idea, or explore opportunities, feel free to reach out.
-    </p>
-
+      Thank you for visiting my portfolio. </p>
     <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-10 col-lg-8">
         <div class="contact-card">
           <div class="mb-2">
             <strong>Email:</strong>
